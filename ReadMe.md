@@ -1,4 +1,4 @@
-# typeorm-mui-query
+# MUI TypeORM querybuilder
 
 [MUI](https://mui.com/) [TypeORM](https://typeorm.io/) querybuilder
 
