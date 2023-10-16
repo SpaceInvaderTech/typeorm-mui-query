@@ -15,9 +15,11 @@
   ],
   "scripts": {
     "build": "rollup -c",
+    "predeploy": "npm run test && npm run build",
+    "deploy": "npm version patch && npm publish",
     "lint": "eslint src --ext .ts",
     "typecheck": "tsc",
-    "test": "mocha"
+    "test": "ts-mocha -p test/tsconfig.json test/*.ts"
   },
   "devDependencies": {
     "@mui/x-data-grid": "6.16.2",
@@ -34,7 +36,7 @@
     "prettier": "2.8.8",
     "rollup": "4.1.4",
     "sqlite3": "5.1.6",
-    "ts-node": "10.9.1",
+    "ts-mocha": "10.0.0",
     "typeorm": "0.3.17",
     "typescript": "5.2.2"
   },
