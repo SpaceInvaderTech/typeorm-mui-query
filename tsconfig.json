@@ -2,14 +2,7 @@
   "extends": "@tsconfig/node18/tsconfig.json",
   "compilerOptions": {
     "alwaysStrict": true,
-    "noImplicitReturns": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "outDir": "out",
-    "removeComments": true,
-    "resolveJsonModule": true,
-    "strictPropertyInitialization": false,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true
+    "declaration": true,
+    "declarationDir": "output"
   }
 }
