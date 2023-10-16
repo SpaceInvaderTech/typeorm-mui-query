@@ -11,7 +11,7 @@ const initParameters = {
   offset: 0,
   limit: 100,
   sortModel: [] as GridSortModel,
-  filterModel: undefined as undefined | GridFilterModel,
+  filterModel: { items: [] } as GridFilterModel,
 };
 
 export function handleQueryStringParameters(
