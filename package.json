@@ -16,7 +16,7 @@
   "scripts": {
     "build": "rollup -c",
     "lint": "eslint src --ext .ts",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc",
     "test": "mocha"
   },
   "devDependencies": {
