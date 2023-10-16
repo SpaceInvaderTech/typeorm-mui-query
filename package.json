@@ -1,0 +1,23 @@
+{
+  "name": "typeorm-mui-query",
+  "version": "1.0.0",
+  "description": "MUI TypeORM querybuilder",
+  "license": "ISC",
+  "main": "index.js",
+  "scripts": {
+    "format": "prettier --write .",
+    "lint": "eslint src --ext .ts",
+    "typecheck": "tsc --strict --noEmit --checkJs"
+  },
+  "devDependencies": {
+    "rollup": "4.1.4",
+    "@tsconfig/node18": "18.2.2",
+    "@typescript-eslint/eslint-plugin": "6.7.5",
+    "@typescript-eslint/parser": "6.7.5",
+    "eslint": "8.51.0",
+    "eslint-config-prettier": "8.10.0",
+    "eslint-plugin-prettier": "4.2.1",
+    "prettier": "2.8.8",
+    "typescript": "5.2.2"
+  }
+}
