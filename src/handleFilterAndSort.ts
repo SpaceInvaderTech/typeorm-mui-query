@@ -35,7 +35,7 @@ export function handleFilterAndSort(
       qb.andWhere(
         new Brackets((qb2) => {
           qb2.where(
-            whereStatements.join(filterModel.logicOperator ?? ''),
+            whereStatements.join(filterModel.logicOperator ?? ' OR '),
             parameters
           );
         })
