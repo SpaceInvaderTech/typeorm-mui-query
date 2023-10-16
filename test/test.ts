@@ -25,7 +25,7 @@ describe('tests', () => {
     handleFilterAndSort(
       qb,
       'test',
-      queryParameters.filterModel!,
+      queryParameters.filterModel,
       queryParameters.sortModel
     );
     const resultQuery = qb.getQuery();
@@ -55,7 +55,7 @@ describe('crash tests', () => {
     handleFilterAndSort(
       qb,
       null,
-      queryParameters.filterModel!,
+      queryParameters.filterModel,
       queryParameters.sortModel
     );
     // const resultQuery = qb.getQueryAndParameters();
@@ -75,7 +75,7 @@ describe('crash tests', () => {
     handleFilterAndSort(
       qb,
       'account',
-      queryParameters.filterModel!,
+      queryParameters.filterModel,
       queryParameters.sortModel
     );
     // const resultQuery = qb.getQueryAndParameters();
