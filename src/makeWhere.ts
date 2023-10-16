@@ -63,6 +63,7 @@ export function makeWhere(
         value
       )}`;
     default:
-      throw new Error(`Unknown operator: ${operator}`);
+      console.warn('Unknown operator: %s', operator);
+      return `${fieldFormat(tableName, field)} ${operator} :${parameterName}`;
   }
 }
