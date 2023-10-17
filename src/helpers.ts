@@ -18,7 +18,7 @@ function quote(value: string) {
   return `"${value}"`;
 }
 
-export function fieldFormat(tableName: string | null, field: string) {
-  if (field.includes('.') || tableName === null) return field;
+export function fieldFormat(field: string, tableName?: string | null) {
+  if (field.includes('.') || !tableName) return field;
   return `${quote(tableName)}.${quote(field)}`;
 }

@@ -16,54 +16,54 @@ export function makeWhere(
     case '<':
     case '<=':
       return `${fieldFormat(
-        tableName,
-        field
+        field,
+        tableName
       )} ${operator} :${parameterName}::int`;
     // common
     case 'contains':
       return `${fieldFormat(
-        tableName,
-        field
+        field,
+        tableName
       )} ILIKE '%' || :${parameterName} || '%'`;
     case 'equals':
-      return `${fieldFormat(tableName, field)} = :${parameterName}`;
+      return `${fieldFormat(field, tableName)} = :${parameterName}`;
     case 'startsWith':
-      return `${fieldFormat(tableName, field)} ILIKE :${parameterName} || '%'`;
+      return `${fieldFormat(field, tableName)} ILIKE :${parameterName} || '%'`;
     case 'endsWith':
-      return `${fieldFormat(tableName, field)} ILIKE '%' || :${parameterName}`;
+      return `${fieldFormat(field, tableName)} ILIKE '%' || :${parameterName}`;
     case 'isEmpty':
-      return `${fieldFormat(tableName, field)} IS NULL`;
+      return `${fieldFormat(field, tableName)} IS NULL`;
     case 'isNotEmpty':
-      return `${fieldFormat(tableName, field)} IS NOT NULL`;
+      return `${fieldFormat(field, tableName)} IS NOT NULL`;
     case 'isAnyOf':
-      return `${fieldFormat(tableName, field)} IN(:...${parameterName})`;
+      return `${fieldFormat(field, tableName)} IN(:...${parameterName})`;
     // date | selectable
     case 'is':
-      return `${fieldFormat(tableName, field)} = :${parameterName}${cast(
+      return `${fieldFormat(field, tableName)} = :${parameterName}${cast(
         value
       )}`;
     case 'not':
-      return `${fieldFormat(tableName, field)} != :${parameterName}${cast(
+      return `${fieldFormat(field, tableName)} != :${parameterName}${cast(
         value
       )}`;
     case 'after':
-      return `${fieldFormat(tableName, field)} > :${parameterName}${cast(
+      return `${fieldFormat(field, tableName)} > :${parameterName}${cast(
         value
       )}`;
     case 'onOrAfter':
-      return `${fieldFormat(tableName, field)} >= :${parameterName}${cast(
+      return `${fieldFormat(field, tableName)} >= :${parameterName}${cast(
         value
       )}`;
     case 'before':
-      return `${fieldFormat(tableName, field)} < :${parameterName}${cast(
+      return `${fieldFormat(field, tableName)} < :${parameterName}${cast(
         value
       )}`;
     case 'onOrBefore':
-      return `${fieldFormat(tableName, field)} <= :${parameterName}${cast(
+      return `${fieldFormat(field, tableName)} <= :${parameterName}${cast(
         value
       )}`;
     default:
       console.warn('Unknown operator: %s', operator);
-      return `${fieldFormat(tableName, field)} ${operator} :${parameterName}`;
+      return `${fieldFormat(field, tableName)} ${operator} :${parameterName}`;
   }
 }

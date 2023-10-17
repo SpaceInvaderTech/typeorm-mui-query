@@ -59,7 +59,7 @@ export function handleFilterAndSort(
   if (sortModel.length) {
     sortModel.forEach(({ field, sort }) =>
       qb.addOrderBy(
-        fieldFormat(tableName, field),
+        fieldFormat(field, tableName),
         sort?.toUpperCase() as 'ASC' | 'DESC',
         'NULLS LAST'
       )
