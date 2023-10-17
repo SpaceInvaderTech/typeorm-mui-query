@@ -4,5 +4,6 @@
     "rootDir": "..",
     "experimentalDecorators": true,
     "strictPropertyInitialization": false
-  }
+  },
+  "exclude": []
 }
