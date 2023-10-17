@@ -40,6 +40,11 @@ const results = await API.get('default', `/example?${query.toString()}`, {})
 ### Backend
 
 ```TypeScript
+import {
+  handleFilterAndSort,
+  handleQueryStringParameters,
+} from 'typeorm-mui-query'
+
 const { filterModel, sortModel, offset, limit } = handleQueryStringParameters(
   queryStringParameters
 )
