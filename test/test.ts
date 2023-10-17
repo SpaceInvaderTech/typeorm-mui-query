@@ -31,7 +31,7 @@ describe('tests', () => {
     const resultQuery = qb.getQuery();
     assert.strictEqual(
       resultQuery,
-      'SELECT * FROM "test" "test" ORDER BY test.date DESC NULLS LAST'
+      'SELECT * FROM "test" "test" ORDER BY "test"."date" DESC NULLS LAST'
     );
   });
 });

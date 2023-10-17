@@ -9,8 +9,16 @@ export function cast(value: string | string[]) {
   return '';
 }
 
+function isQuoted(value: string) {
+  return value.startsWith('"') && value.endsWith('"');
+}
+
+function quote(value: string) {
+  if (isQuoted(value)) return value;
+  return `"${value}"`;
+}
+
 export function fieldFormat(tableName: string | null, field: string) {
-  return field.includes('.') || tableName === null
-    ? field
-    : `${tableName}.${field}`;
+  if (field.includes('.') || tableName === null) return field;
+  return `${quote(tableName)}.${quote(field)}`;
 }
