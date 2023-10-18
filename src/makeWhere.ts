@@ -1,12 +1,17 @@
 import type { GridFilterItem } from '@mui/x-data-grid';
 import { fieldFormat, cast } from './helpers';
 
-export function makeWhere(
-  tableName: string | null,
-  { field, operator }: GridFilterItem,
-  parameterName: string,
-  value: string | string[]
-): string {
+type Props = {
+  tableName?: string;
+  filterItem: GridFilterItem;
+  parameterName: string;
+};
+
+export function makeWhere({
+  tableName,
+  filterItem: { field, operator, value },
+  parameterName,
+}: Props): string {
   switch (operator) {
     // number
     case '=':

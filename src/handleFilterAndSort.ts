@@ -1,35 +1,57 @@
 import type { SelectQueryBuilder, ObjectLiteral } from 'typeorm';
-import type { GridFilterModel, GridSortItem } from '@mui/x-data-grid';
+import type { GridFilterModel, GridSortModel } from '@mui/x-data-grid';
 import { Brackets } from 'typeorm';
 import { makeWhere } from './makeWhere';
 import { fieldFormat } from './helpers';
 
-export function handleFilterAndSort(
-  qb: SelectQueryBuilder<ObjectLiteral>,
-  tableName: string | null,
-  filterModel: GridFilterModel,
-  sortModel: GridSortItem[],
-  quickFilterFields: string[] = []
-) {
+type Props = {
+  qb: SelectQueryBuilder<ObjectLiteral>;
+  tableMap?: {
+    [tableName: string]: string[];
+  };
+  filterModel?: GridFilterModel;
+  sortModel?: GridSortModel;
+  quickFilterFields?: string[];
+  nullsFirst?: boolean;
+};
+
+function invertTableMap(tableMap: Props['tableMap']) {
+  if (!tableMap) return {};
+  return Object.entries(tableMap).reduce((acc, [tableName, fields]) => {
+    fields.forEach((field) => {
+      acc[field] = tableName;
+    });
+    return acc;
+  }, {} as { [field: string]: string });
+}
+
+export function handleFilterAndSort({
+  qb,
+  tableMap,
+  filterModel,
+  sortModel,
+  quickFilterFields,
+  nullsFirst = false,
+}: Props) {
+  const tableNameMap = invertTableMap(tableMap);
   if (filterModel) {
     const whereStatements: string[] = [];
     const parameters: ObjectLiteral = {};
-    filterModel.items.forEach((item) => {
-      if (item.value === undefined) {
+    filterModel.items.forEach((filterItem) => {
+      if (filterItem.value === undefined) {
         return;
       }
-      if (Array.isArray(item.value) && item.value.length === 0) {
+      if (Array.isArray(filterItem.value) && filterItem.value.length === 0) {
         return;
       }
-      const parameterName = `p${item.id}`;
-      const whereStatement = makeWhere(
-        tableName,
-        item,
+      const parameterName = `p${filterItem.id}`;
+      const whereStatement = makeWhere({
+        tableName: tableNameMap[filterItem.field],
+        filterItem,
         parameterName,
-        item.value
-      );
+      });
       whereStatements.push(`(${whereStatement})`);
-      parameters[parameterName] = item.value;
+      parameters[parameterName] = filterItem.value;
     });
     if (whereStatements.length > 0) {
       qb.andWhere(
@@ -41,7 +63,7 @@ export function handleFilterAndSort(
         })
       );
     }
-    if (filterModel.quickFilterValues && filterModel.quickFilterValues.length) {
+    if (quickFilterFields && filterModel.quickFilterValues?.length) {
       filterModel.quickFilterValues.forEach((value, index) => {
         const parameterName = `quickFilter${index}`;
         const params = { [parameterName]: value };
@@ -56,12 +78,12 @@ export function handleFilterAndSort(
       });
     }
   }
-  if (sortModel.length) {
+  if (sortModel) {
     sortModel.forEach(({ field, sort }) =>
       qb.addOrderBy(
-        fieldFormat(field, tableName),
+        fieldFormat(field, tableNameMap[field]),
         sort?.toUpperCase() as 'ASC' | 'DESC',
-        'NULLS LAST'
+        nullsFirst ? 'NULLS FIRST' : 'NULLS LAST'
       )
     );
   }
