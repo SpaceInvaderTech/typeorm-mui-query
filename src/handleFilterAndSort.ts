@@ -9,6 +9,7 @@ type Props = {
   tableMap?: {
     [tableName: string]: string[];
   };
+  tableDefault?: string;
   filterModel?: GridFilterModel;
   sortModel?: GridSortModel;
   quickFilterFields?: string[];
@@ -28,6 +29,7 @@ function invertTableMap(tableMap: Props['tableMap']) {
 export function handleFilterAndSort({
   qb,
   tableMap,
+  tableDefault,
   filterModel,
   sortModel,
   quickFilterFields,
@@ -46,7 +48,7 @@ export function handleFilterAndSort({
       }
       const parameterName = `p${filterItem.id}`;
       const whereStatement = makeWhere({
-        tableName: tableNameMap[filterItem.field],
+        tableName: tableNameMap[filterItem.field] || tableDefault,
         filterItem,
         parameterName,
       });
@@ -81,7 +83,7 @@ export function handleFilterAndSort({
   if (sortModel) {
     sortModel.forEach(({ field, sort }) =>
       qb.addOrderBy(
-        fieldFormat(field, tableNameMap[field]),
+        fieldFormat(field, tableNameMap[field] || tableDefault),
         sort?.toUpperCase() as 'ASC' | 'DESC',
         nullsFirst ? 'NULLS FIRST' : 'NULLS LAST'
       )

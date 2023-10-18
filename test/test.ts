@@ -24,7 +24,8 @@ describe('tests', () => {
     const qb = ds.createQueryBuilder().from('test', 'test');
     handleFilterAndSort({
       qb,
-      tableMap: { test: ['date'] },
+      // tableMap: { test: ['date'] },
+      tableDefault: 'test',
       filterModel,
       sortModel,
     });
