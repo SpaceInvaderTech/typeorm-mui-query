@@ -15,3 +15,9 @@ jobs:
       - run: npm run deploy
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+  push:
+    runs-on: ubuntu-latest
+    steps:
+      - run: git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
