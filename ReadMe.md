@@ -49,5 +49,5 @@ const { filterModel, sortModel, offset, limit } = handleQueryStringParameters(
   queryStringParameters
 )
 handleFilterAndSort({ qb, filterModel, sortModel })
-const results = await qb.take(limit).skip(offset).getManyAndCount()
+const results = await qb.take(limit).skip(offset).getMany()
 ```
