@@ -48,6 +48,6 @@ import {
 const { filterModel, sortModel, offset, limit } = handleQueryStringParameters(
   queryStringParameters
 )
-handleFilterAndSort(qb, tableName, filterModel, sortModel)
-const results = await qb.getManyAndCount()
+handleFilterAndSort({ qb, filterModel, sortModel })
+const results = await qb.take(limit).skip(offset).getManyAndCount()
 ```
