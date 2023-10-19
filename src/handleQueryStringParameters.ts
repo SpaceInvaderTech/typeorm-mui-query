@@ -1,37 +1,54 @@
 import type { GridFilterModel, GridSortModel } from '@mui/x-data-grid';
 
-type QueryStringParameters = {
-  offset?: number;
+export type QueryStringParameters = Record<string, unknown> | undefined;
+
+type Result = {
   limit?: number;
-  sortModel?: string;
-  filterModel?: string;
+  offset?: number;
+  take?: number;
+  skip?: number;
+  filterModel?: GridFilterModel;
+  sortModel?: GridSortModel;
 };
 
+type PaginationParameters = (string &
+  keyof Omit<Result, 'filterModel' | 'sortModel'>)[];
+
+const paginationParameters: PaginationParameters = [
+  'limit',
+  'offset',
+  'take',
+  'skip',
+];
+
 const initParameters = {
-  offset: 0,
-  limit: 100,
   sortModel: [] as GridSortModel,
   filterModel: { items: [] } as GridFilterModel,
 };
 
 export function handleQueryStringParameters(
-  queryStringParameters: QueryStringParameters | undefined,
+  queryStringParameters: QueryStringParameters,
   defaultParameters = initParameters
-) {
+): Result {
   if (queryStringParameters === undefined) {
     return defaultParameters;
   }
-  const definedParameters = { ...defaultParameters };
-  if (queryStringParameters.offset !== undefined) {
-    definedParameters.offset = Number(queryStringParameters.offset);
-  }
-  if (queryStringParameters.limit !== undefined) {
-    definedParameters.limit = Number(queryStringParameters.limit);
-  }
-  if (queryStringParameters.sortModel !== undefined) {
+  const definedParameters: Result = { ...defaultParameters };
+  paginationParameters.forEach((parameter) => {
+    if (queryStringParameters[parameter] !== undefined) {
+      definedParameters[parameter] = Number(queryStringParameters[parameter]);
+    }
+  });
+  if (
+    queryStringParameters.sortModel !== undefined &&
+    typeof queryStringParameters.sortModel === 'string'
+  ) {
     definedParameters.sortModel = JSON.parse(queryStringParameters.sortModel);
   }
-  if (queryStringParameters.filterModel !== undefined) {
+  if (
+    queryStringParameters.filterModel !== undefined &&
+    typeof queryStringParameters.filterModel === 'string'
+  ) {
     definedParameters.filterModel = JSON.parse(
       queryStringParameters.filterModel
     );
