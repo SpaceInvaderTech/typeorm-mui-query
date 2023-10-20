@@ -81,12 +81,16 @@ describe('paginationParameters', () => {
   });
   it('take, skip', () => {
     const qb = ds.createQueryBuilder().from('test', 'test');
+    const queryStringParameters = {
+      take: '5',
+      skip: '10',
+    };
+    const { take, skip } = handleQueryStringParameters(queryStringParameters);
+    assert.strictEqual(take, Number(queryStringParameters.take));
+    assert.strictEqual(skip, Number(queryStringParameters.skip));
     handleQuery({
       qb,
-      queryStringParameters: {
-        take: '5',
-        skip: '10',
-      },
+      queryStringParameters,
     });
     assert.strictEqual(
       qb.getQuery(),
@@ -125,8 +129,10 @@ describe('handleQueryStringParameters', () => {
         'sortModel=%5B%7B%22field%22%3A%22barcode%22%2C%22sort%22%3A%22desc%22%7D%5D&filterModel=%7B%22items%22%3A%5B%7B%22field%22%3A%22account.id%22%2C%22operator%22%3A%22is%22%2C%22id%22%3A81088%2C%22value%22%3A%22504e1338-eba4-4be2-9a76-1a9d11196ebf%22%7D%2C%7B%22field%22%3A%22account.id%22%2C%22operator%22%3A%22is%22%2C%22id%22%3A19590%2C%22value%22%3A%22d188567e-45b5-4ed4-ace5-df2c664e1718%22%7D%5D%7D&offset=0&limit=50'
       )
     );
-    const { filterModel, sortModel } =
+    const { filterModel, sortModel, offset, limit } =
       handleQueryStringParameters(searchParamsObject);
+    assert.strictEqual(offset, 0);
+    assert.strictEqual(limit, 50);
     // console.log(JSON.stringify(queryParameters, null, 2));
     const qb = ds.createQueryBuilder().from('test', 'account');
     handleFilterAndSort({
