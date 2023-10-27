@@ -60,6 +60,17 @@ describe('tests', () => {
     });
     assert.strictEqual(qb.getQuery(), 'SELECT * FROM "test" "test"');
   });
+  it('!queryStringParameters', () => {
+    const qb1 = ds.createQueryBuilder().from('test', 'test');
+    handleQuery({ qb: qb1, queryStringParameters: null });
+    assert.strictEqual(qb1.getQuery(), 'SELECT * FROM "test" "test"');
+    const qb2 = ds.createQueryBuilder().from('test', 'test');
+    handleQuery({ qb: qb2, queryStringParameters: undefined });
+    assert.strictEqual(qb2.getQuery(), 'SELECT * FROM "test" "test"');
+    const qb3 = ds.createQueryBuilder().from('test', 'test');
+    handleQuery({ qb: qb3, queryStringParameters: {} });
+    assert.strictEqual(qb3.getQuery(), 'SELECT * FROM "test" "test"');
+  });
 });
 
 describe('paginationParameters', () => {

@@ -1,6 +1,6 @@
 import type { GridFilterModel, GridSortModel } from '@mui/x-data-grid';
 
-export type QueryStringParameters = Record<string, unknown> | undefined;
+export type QueryStringParameters = Record<string, unknown> | undefined | null;
 
 type Result = {
   limit?: number;
@@ -30,7 +30,7 @@ export function handleQueryStringParameters(
   queryStringParameters: QueryStringParameters,
   defaultParameters = initParameters
 ): Result {
-  if (queryStringParameters === undefined) {
+  if (!queryStringParameters) {
     return defaultParameters;
   }
   const definedParameters: Result = { ...defaultParameters };
