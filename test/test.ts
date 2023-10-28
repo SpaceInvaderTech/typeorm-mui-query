@@ -71,6 +71,36 @@ describe('tests', () => {
     handleQuery({ qb: qb3, queryStringParameters: {} });
     assert.strictEqual(qb3.getQuery(), 'SELECT * FROM "test" "test"');
   });
+  it('is with no filter value', () => {
+    const qb = ds.createQueryBuilder().from('test', 'test');
+    handleQuery({
+      qb,
+      queryStringParameters: {
+        filterModel: JSON.stringify({
+          items: [{ field: 'hubId', operator: 'is' }],
+        }),
+      } as APIGatewayProxyEventV2['queryStringParameters'],
+    });
+    assert.strictEqual(
+      qb.getQuery(),
+      'SELECT * FROM "test" "test" WHERE ((hubId IS NULL))'
+    );
+  });
+  it('not with no filter value', () => {
+    const qb = ds.createQueryBuilder().from('test', 'test');
+    handleQuery({
+      qb,
+      queryStringParameters: {
+        filterModel: JSON.stringify({
+          items: [{ field: 'hubId', operator: 'not' }],
+        }),
+      } as APIGatewayProxyEventV2['queryStringParameters'],
+    });
+    assert.strictEqual(
+      qb.getQuery(),
+      'SELECT * FROM "test" "test" WHERE ((hubId IS NOT NULL))'
+    );
+  });
 });
 
 describe('paginationParameters', () => {

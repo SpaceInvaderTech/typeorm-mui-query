@@ -35,9 +35,6 @@ export function handleFilterModel(
   const whereStatements: string[] = [];
   const parameters: ObjectLiteral = {};
   filterModel.items.forEach((filterItem) => {
-    if (filterItem.value === undefined) {
-      return;
-    }
     if (Array.isArray(filterItem.value) && filterItem.value.length === 0) {
       return;
     }

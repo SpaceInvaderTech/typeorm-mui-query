@@ -7,6 +7,19 @@ type MakeWhereProps = {
   parameterName: string;
 };
 
+function handleNoValue(
+  fieldFormatted: string,
+  operator: string,
+  parameterName: string,
+  value?: string | string[],
+  condition: 'IS NULL' | 'IS NOT NULL' = 'IS NULL'
+) {
+  if (!value) {
+    return `${fieldFormatted} ${condition}`;
+  }
+  return `${fieldFormatted} ${operator} :${parameterName}${cast(value)}`;
+}
+
 export function makeWhere({
   tableName,
   filterItem: { field, operator, value },
@@ -44,13 +57,20 @@ export function makeWhere({
       return `${fieldFormat(field, tableName)} IN(:...${parameterName})`;
     // date | selectable
     case 'is':
-      return `${fieldFormat(field, tableName)} = :${parameterName}${cast(
+      return handleNoValue(
+        fieldFormat(field, tableName),
+        '=',
+        parameterName,
         value
-      )}`;
+      );
     case 'not':
-      return `${fieldFormat(field, tableName)} != :${parameterName}${cast(
-        value
-      )}`;
+      return handleNoValue(
+        fieldFormat(field, tableName),
+        '!=',
+        parameterName,
+        value,
+        'IS NOT NULL'
+      );
     case 'after':
       return `${fieldFormat(field, tableName)} > :${parameterName}${cast(
         value
