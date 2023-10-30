@@ -44,8 +44,10 @@ export function handleFilterModel(
       filterItem,
       parameterName,
     });
-    whereStatements.push(`(${whereStatement})`);
-    parameters[parameterName] = filterItem.value;
+    if (whereStatement !== false) {
+      whereStatements.push(`(${whereStatement})`);
+      parameters[parameterName] = filterItem.value;
+    }
   });
   if (whereStatements.length > 0) {
     qb.andWhere(

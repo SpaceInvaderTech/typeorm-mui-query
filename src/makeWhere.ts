@@ -24,7 +24,7 @@ export function makeWhere({
   tableName,
   filterItem: { field, operator, value },
   parameterName,
-}: MakeWhereProps): string {
+}: MakeWhereProps): string | false {
   switch (operator) {
     // number
     case '=':
@@ -33,27 +33,33 @@ export function makeWhere({
     case '>=':
     case '<':
     case '<=':
+      if (!value) return false;
       return `${fieldFormat(
         field,
         tableName
       )} ${operator} :${parameterName}::int`;
     // common
     case 'contains':
+      if (!value) return false;
       return `${fieldFormat(
         field,
         tableName
       )} ILIKE '%' || :${parameterName} || '%'`;
     case 'equals':
+      if (!value) return false;
       return `${fieldFormat(field, tableName)} = :${parameterName}`;
     case 'startsWith':
+      if (!value) return false;
       return `${fieldFormat(field, tableName)} ILIKE :${parameterName} || '%'`;
     case 'endsWith':
+      if (!value) return false;
       return `${fieldFormat(field, tableName)} ILIKE '%' || :${parameterName}`;
     case 'isEmpty':
       return `${fieldFormat(field, tableName)} IS NULL`;
     case 'isNotEmpty':
       return `${fieldFormat(field, tableName)} IS NOT NULL`;
     case 'isAnyOf':
+      if (!value) return false;
       return `${fieldFormat(field, tableName)} IN(:...${parameterName})`;
     // date | selectable
     case 'is':
@@ -72,18 +78,22 @@ export function makeWhere({
         'IS NOT NULL'
       );
     case 'after':
+      if (!value) return false;
       return `${fieldFormat(field, tableName)} > :${parameterName}${cast(
         value
       )}`;
     case 'onOrAfter':
+      if (!value) return false;
       return `${fieldFormat(field, tableName)} >= :${parameterName}${cast(
         value
       )}`;
     case 'before':
+      if (!value) return false;
       return `${fieldFormat(field, tableName)} < :${parameterName}${cast(
         value
       )}`;
     case 'onOrBefore':
+      if (!value) return false;
       return `${fieldFormat(field, tableName)} <= :${parameterName}${cast(
         value
       )}`;
