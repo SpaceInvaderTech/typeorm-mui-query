@@ -1,6 +1,6 @@
 {
   "name": "typeorm-mui-query",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "description": "MUI TypeORM querybuilder",
   "keywords": [
     "MUI",
